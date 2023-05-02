@@ -16,7 +16,7 @@ The script returns the following information:
 
 There are four available versions:
 
-- Base Scraper module with OCR (module without frontend)
+- `aircraft_search` python library
 - Web API made with [FastAPI](https://github.com/tiangolo/fastapi/)
 - HTML Web interface (Currently in progess)
 - Web interface made with [Streamlit](https://github.com/streamlit/streamlit)
@@ -42,24 +42,19 @@ pip install -r requirements.txt
 
 #### - Base scraper module
 
-`example_module.py`:
-
 ```
-import json
 import aircraft_search
 
-aircraft_reg_no = "N145DQ"  # aircraft registration number
+aircraft_reg_no = "N145DQ"  # example aircraft registration number
 
-# Logging is disabled by default and hence the only output
-# is the data about the aircraft being returned as an JSON object
-# aircraft_data = aircraft_search.aircraft_details_query(
-#     aircraft_registration_number)
+searcher = aircraft_search.aircraft_searcher(logging=True, json_response=False)
 
-aircraft_data = aircraft_search.aircraft_details_query(
-    aircraft_reg_no, logging=True)
-print("\nJSON data:\n", json.dumps(aircraft_data, indent=4))
+aircraft_data = searcher.aircraft_details_query(aircraft_reg_no)
 
+print(aircraft_data)
 ```
+
+Please view [`example_module.py`](example_module.py) for more examples.
 
 #### - API + HTML Web interface
 

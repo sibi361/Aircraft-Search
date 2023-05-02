@@ -1,15 +1,15 @@
-import json
 import aircraft_search
 
-aircraft_reg_no = "N145DQ"  # aircraft registration number
+aircraft_reg_no = "N145DQ"  # example aircraft registration number
+
+# Logging is disabled by default and hence the default response is JSON
+# JSON response can be suppressed by setting json_response to False
+searcher = aircraft_search.aircraft_searcher(logging=True, json_response=False)
 
 # show_image enables showing the aircraft image in the default image viewer
-# aircraft_data = aircraft_search.aircraft_details_query(
-#     aircraft_registration_number, show_image=True)
+# searcher = searcher.aircraft_search_class(logging=True, show_image=True, json_response=False)
 
-# # Logging is disabled by default and hence the only output
-# is the data about the aircraft being returned as an JSON object
+# This is where the script actually queries the sources and presents the data
+aircraft_data = searcher.aircraft_details_query(aircraft_reg_no)
 
-aircraft_data = aircraft_search.aircraft_details_query(
-    aircraft_reg_no, logging=True)
-print("\nJSON data:\n", json.dumps(aircraft_data, indent=4))
+print(aircraft_data)
