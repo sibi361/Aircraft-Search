@@ -78,13 +78,18 @@ streamlit run streamlit_web_interface.py
 
 - [x] Enable searching for an aircraft using Flight Number
 - [ ] API: Enable sending image object as a POST request to `/queryByImage` so that users can search using aircraft / flight ticket's image
+- [ ] API: Switch to `APIRouter`
 - [ ] Web interface: Make a web app using the API as backend with features:
-  - [ ] Query multiple reg numbers / flight numbers in parallel
+  - [ ] Query multiple reg numbers / flight numbers in parallel with JS
   - [x] Show aviation related fun facts while the backend API fetches the results
+- Pool all possible requests and parallelly run them with `grequests` and then parse them
 - [ ] OCR: Switch to a faster OCR engine
 - [ ] OCR: Flight ticket Flight Number -> Query
 - [ ] Package aircraft_search as pip package
+- [ ] Make a GUI using [ttkbootstrap](https://ttkbootstrap.readthedocs.io/en/latest/)
 - [ ] Add logo image with badges to README.md
+- [ ] Find and give credit to owners of test images
+- [ ] Add argument passing functionality
 
 ## License
 

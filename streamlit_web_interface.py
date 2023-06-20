@@ -191,7 +191,7 @@ with tab1:
                 w, h, c = img.shape
                 sf = 400 / w
                 img2 = cv2.resize(cv2.cvtColor(img, cv2.COLOR_BGR2RGB),
-                                None, fx=sf, fy=sf, interpolation=cv2.INTER_AREA)
+                                  None, fx=sf, fy=sf, interpolation=cv2.INTER_AREA)
                 st.image(img2)
             else:
                 st.image(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -234,42 +234,49 @@ with tab2:
 
     flight_number = st.text_input(
         label="Enter flight number:", placeholder="Example:  DL301").upper().strip()
-    
+
     if st.button("Search", key=1):
-        status_code, html_text = get_website('https://www.flightera.net/en/flight/', flight_number)
+        status_code, html_text = get_website(
+            'https://www.flightera.net/en/flight/', flight_number)
 
         if status_code > 300:
-            st.text("Flight Number Information not available. Please enter a valid fight numnber.")
+            st.text(
+                "Flight Number Information not available. Please enter a valid fight numnber.")
         else:
             soup = BeautifulSoup(html_text, 'lxml')
-            info = soup.find('main', class_='flex-auto px-2 max-w-4xl mt-4 mx-auto')
+            info = soup.find(
+                'main', class_='flex-auto px-2 max-w-4xl mt-4 mx-auto')
             flight_number_info = info.find(
                 'dt', class_='text-xl text-center leading-5 font-bold text-gray-800 dark:text-white')
             st.subheader(flight_number_info.text.strip())
-
 
             flight_status = info.find(
                 'dd', class_='text-center text-sm leading-5 text-gray-900 dark:text-white mt-6')
             st.write(flight_status.text.strip())
             st.markdown("---")
 
-            origin_and_destination = info.findAll('span', class_='text-lg font-medium')
+            origin_and_destination = info.findAll(
+                'span', class_='text-lg font-medium')
             origin_name = origin_and_destination[0].text.strip()
             destination_name = origin_and_destination[1].text.strip()
 
             origin_airport_code_info = info.find(
                 'dd', class_='text-left text-xs leading-5 text-gray-500 dark:text-white')
-            code_string = remove_delimiters(origin_airport_code_info.text.strip())
+            code_string = remove_delimiters(
+                origin_airport_code_info.text.strip())
             origin_airport_code = code_string[0:3] + "/" + code_string[-4:]
 
             destination_airport_code_info = info.find(
                 'dd', class_='text-right text-xs leading-5 text-gray-500 dark:text-white')
-            code_string = remove_delimiters(destination_airport_code_info.text.strip())
-            destination_airport_code = code_string[0:3] + "/" + code_string[-4:]
+            code_string = remove_delimiters(
+                destination_airport_code_info.text.strip())
+            destination_airport_code = code_string[0:3] + \
+                "/" + code_string[-4:]
 
             flight_info = info.find(
                 'div', class_='col-span-1 text-xs text-center text-gray-600 dark:text-white mt-6')
-            flight_duration_info = flight_info.findAll('span', class_='whitespace-nowrap')
+            flight_duration_info = flight_info.findAll(
+                'span', class_='whitespace-nowrap')
             flight_duration = flight_duration_info[0].text.strip()
             flight_distance = flight_duration_info[1].text.strip()
 
@@ -277,15 +284,16 @@ with tab2:
                 'dd', class_='text-left text-sm leading-5 text-gray-800 dark:text-white').text
             terminal_and_gate_destination = info.find(
                 'dd', class_='text-right text-sm leading-5 text-gray-500 dark:text-white').text
-            
+
             depatrure_info = info.find(
                 "dt", class_="text-left text-md text-base leading-5 text-gray-800 dark:text-gray-100")
-            departure = depatrure_info.find("span", class_="whitespace-nowrap").text
+            departure = depatrure_info.find(
+                "span", class_="whitespace-nowrap").text
 
             arrival_info = info.find(
                 "dt", class_="text-right text-md text-base leading-5 text-gray-800 dark:text-gray-100")
-            arrival = arrival_info.find("span", class_="whitespace-nowrap").text
-
+            arrival = arrival_info.find(
+                "span", class_="whitespace-nowrap").text
 
             _headings = info.findAll(
                 'dt', class_='text-left text-sm leading-5 font-bold text-gray-500 dark:text-gray-300')
@@ -321,55 +329,53 @@ with tab2:
             else:
                 plane_info_items.append("NA")
 
-
-            plane_info_items[0] = " ".join(plane_info_items[0].split()) 
+            plane_info_items[0] = " ".join(plane_info_items[0].split())
             plane_info_items[3] = plane_info_items[3][0:8]
 
             plane_info_dict = dict(zip(plane_info_headings, plane_info_items))
 
-
             col1, col2, col3 = st.columns(3)
             with col1:
-                st.markdown("<h2 style='text-align: left'>" 
+                st.markdown("<h2 style='text-align: left'>"
                             + origin_name + "</h2>", unsafe_allow_html=True)
-                st.markdown("<h3 style='text-align: left'>" 
+                st.markdown("<h3 style='text-align: left'>"
                             + origin_airport_code + "</h3>", unsafe_allow_html=True)
-                st.markdown("<h5 style='text-align: left'>" 
+                st.markdown("<h5 style='text-align: left'>"
                             + terminal_and_gate_origin + "</h5>", unsafe_allow_html=True)
-                st.markdown("<h2 style='text-align: left'>" 
+                st.markdown("<h2 style='text-align: left'>"
                             + departure + "</h2>", unsafe_allow_html=True)
-                
 
             with col2:
-                st.markdown("<h5 style='text-align: center'>Duration:  " 
+                st.markdown("<h5 style='text-align: center'>Duration:  "
                             + flight_duration + "</h5>", unsafe_allow_html=True)
-                st.markdown("<h5 style='text-align: center'>Distance:  " 
+                st.markdown("<h5 style='text-align: center'>Distance:  "
                             + flight_distance + "</h5>", unsafe_allow_html=True)
 
             with col3:
-                st.markdown("<h2 style='text-align: right'>" 
+                st.markdown("<h2 style='text-align: right'>"
                             + "To: " + destination_name + "</h2>", unsafe_allow_html=True)
                 st.markdown("<h3 style='text-align: right'>"
-                             + destination_airport_code + "</h3>", unsafe_allow_html=True)
+                            + destination_airport_code + "</h3>", unsafe_allow_html=True)
                 st.markdown("<h5 style='text-align: right'>"
-                             + terminal_and_gate_destination + "</h5>", unsafe_allow_html=True)
+                            + terminal_and_gate_destination + "</h5>", unsafe_allow_html=True)
                 st.markdown("<h2 style='text-align: right'>"
-                             + arrival + "</h2>", unsafe_allow_html=True)
+                            + arrival + "</h2>", unsafe_allow_html=True)
 
             st.markdown("---")
-            frequency_info = info.find('div', class_='col-span-1 text-left').find('dd')
+            frequency_info = info.find(
+                'div', class_='col-span-1 text-left').find('dd')
             frequency = frequency_info.find('span').text
-            st.markdown("<h5 style='text-align: left'>" 
-                            + "Frequency: " + frequency + "</h5>", unsafe_allow_html=True)
+            st.markdown("<h5 style='text-align: left'>"
+                        + "Frequency: " + frequency + "</h5>", unsafe_allow_html=True)
             days_running = frequency_info.text.strip()[len(frequency):].strip()
-            st.markdown("<h5 style='text-align: left'>" 
-                            + days_running + "</h5>", unsafe_allow_html=True)
-            
+            st.markdown("<h5 style='text-align: left'>"
+                        + days_running + "</h5>", unsafe_allow_html=True)
 
             st.markdown("---")
 
-            st.markdown("<h2>Aircraft Information:</h2>", unsafe_allow_html=True)
-            
+            st.markdown("<h2>Aircraft Information:</h2>",
+                        unsafe_allow_html=True)
+
             # Gets registration of aircraft
             _ = []
             for c in plane_info_items[0]:
@@ -393,22 +399,23 @@ with tab2:
                 else:
                     st.markdown("Aircraft image not available")
 
-            st.markdown("") # For extra space below image (\n)
+            st.markdown("")  # For extra space below image (\n)
 
             # Two columns to display aircraft information
             col1, col2 = st.columns(2)
             with col1:
                 for item in plane_info_dict.keys():
-                    st.markdown("<h5 style='text-align: left'>" 
-                            + item + "</h5>", unsafe_allow_html=True)
-                    
+                    st.markdown("<h5 style='text-align: left'>"
+                                + item + "</h5>", unsafe_allow_html=True)
+
             with col2:
                 for item in plane_info_dict.values():
-                    st.markdown("<h5 style='text-align: left'>" 
-                            + item + "</h5>", unsafe_allow_html=True)
-                    
+                    st.markdown("<h5 style='text-align: left'>"
+                                + item + "</h5>", unsafe_allow_html=True)
+
             st.markdown("---")
-            st.markdown("<h2>Past Flights (If any):</h2>", unsafe_allow_html=True)
+            st.markdown("<h2>Past Flights (If any):</h2>",
+                        unsafe_allow_html=True)
 
             tables = pd.read_html(html_text)
             past_flights_df = tables[0]
@@ -440,4 +447,3 @@ with tab2:
                 st_aggrid.AgGrid(past_flights_df, columns_auto_size_mode=2)
             else:
                 st.markdown("No past flights found")
-

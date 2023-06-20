@@ -7,9 +7,9 @@ aircraft_reg_no = "N145DQ"  # example aircraft registration number
 searcher = aircraft_search.aircraft_searcher(logging=True, json_response=False)
 
 # show_image enables showing the aircraft image in the default image viewer
-# searcher = searcher.aircraft_search_class(logging=True, show_image=True, json_response=False)
+# searcher = searcher.aircraft_searcher(logging=True, show_image=True, json_response=False)
 
 # This is where the script actually queries the sources and presents the data
-aircraft_data = searcher.aircraft_details_query(aircraft_reg_no)
+aircraft_data = searcher.aircraft_query_using_reg_no(aircraft_reg_no)
 
 print(aircraft_data)
